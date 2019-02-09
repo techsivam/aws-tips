@@ -1,0 +1,48 @@
+Grafana Installation
+
+sudo wget https://dl.grafana.com/oss/release/grafana_5.4.2_amd64.deb
+sudo dpkg -i grafana_5.4.2_amd64.deb
+
+# sudo wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.4_amd64.deb
+
+sudo apt-get install -y adduser libfontconfig
+
+
+sudo dpkg -i grafana_5.2.4_amd64.deb
+
+
+
+sudo vi /etc/apt/sources.list
+
+
+
+add @last
+deb https://packagecloud.io/grafana/stable/debian/ stretch main
+
+
+
+curl https://packagecloud.io/gpg.key | sudo apt-key add -
+
+
+sudo apt-get update
+sudo apt-get install grafana
+
+
+sudo update-rc.d grafana-server defaults
+sudo systemctl enable grafana-server.service
+
+
+
+find: ‘./snap/core/6130/var/spool/cron/crontabs’: Permission denied
+
+
+sudo systemctl restart grafana-server
+
+
+
+request_data
+
+
+grep -Ril "text-to-find-here" /
+
+grep -Ril "myawsnodejs" /
