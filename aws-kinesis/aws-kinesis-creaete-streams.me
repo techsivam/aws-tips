@@ -1,0 +1,312 @@
+aws configure
+
+list all stream:
+
+aws kinesis list-streams
+
+
+create stream:
+
+aws kinesis create-stream --stream-name myaws-cli-demo-stream --shard-count 1
+
+
+aws kinesis describe-stream --stream-name myaws-cli-demo-stream
+
+insert data:
+
+aws kinesis put-record --stream-name myaws-cli-demo-stream  --partition-key 123 --data demotext01
+aws kinesis put-record --stream-name myaws-cli-demo-stream  --partition-key 123 --data demotext02
+{
+    "ShardId": "shardId-000000000000",
+    "SequenceNumber": "49590972067455292457088343464373184080058911523120087042"
+}
+
+
+get data:
+ first get shard-iterator:
+
+ aws kinesis get-shard-iterator --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON --stream-name myaws-cli-demo-stream
+
+{
+    "ShardIterator": "AAAAAAAAAAGRAGCgzeNZ9c8Q1ZE0lVWNeWwaZgyUmvXsYU622zLUo4FVodp931hVda7UCkCAmDaOU8v6W2yqb+WfHeKTKWj/UlXrSjM/iZZz3GnbRLca+MPbNlddJqJu1qnFH7N52ymxzt+LTqE6ZC38PjF72lrLngdtLEoyk2ekhWVz3N0SXbrLRfH5OFsORyAci+3bGGl2Kntechw1pB7g6w0WGwjmCXgVcKweeJpU3pcpf1BXzQ=="
+}
+
+
+
+
+aws kinesis get-records --shard-iterator AAAAAAAAAAGRAGCgzeNZ9c8Q1ZE0lVWNeWwaZgyUmvXsYU622zLUo4FVodp931hVda7UCkCAmDaOU8v6W2yqb+WfHeKTKWj/UlXrSjM/iZZz3GnbRLca+MPbNlddJqJu1qnFH7N52ymxzt+LTqE6ZC38PjF72lrLngdtLEoyk2ekhWVz3N0SXbrLRfH5OFsORyAci+3bGGl2Kntechw1pB7g6w0WGwjmCXgVcKweeJpU3pcpf1BXzQ==
+
+
+{
+    "Records": [
+        {
+            "Data": "ZGVtb3RleHQwMQ==",
+            "PartitionKey": "123",
+            "ApproximateArrivalTimestamp": 1544552836.826,
+            "SequenceNumber": "49590972067455292457088343464371975154239296481628520450"
+        },
+        {
+            "Data": "ZGVtb3RleHQwMg==",
+            "PartitionKey": "123",
+            "ApproximateArrivalTimestamp": 1544552842.589,
+            "SequenceNumber": "49590972067455292457088343464373184080058911523120087042"
+        }
+    ],
+    "NextShardIterator": "AAAAAAAAAAGe2SAyKFwsABFV/Q5hvgMafFJZTvl85xTmWJR3qoHQDDswDZkLAy8dHGhzlopmRRZCRKg6j0TxoFqHuIncXlcmfd+qCAhdTl6E8R55w2RiyNLwSk4wpV8oGHXp/2KJ3IARWksAsCvufQL/FN2Y9FWaZU5bWDzjbgIGzj5GMnTqnyjktL64er7Q/8XN6VWXHQZwpz22BiqPzIq20wdH6VLaYlwRzTyUhJtR9kRm1qLQNQ==",
+    "MillisBehindLatest": 0
+}
+
+
+
+
+
+aws kinesis delete-stream --stream-name myaws-cli-demo-stream
+
+mvn exec:java -Dexec,mainClass="com.amazonaws.services.kinesis.producer.sample.SampleProducer"
+
+mvn exec:java -Dexec.mainClass="com.amazonaws.services.kinesis.producer.sample.SampleProducer"
+
+myaws-kinesis-kpl-demo
+
+
+
+aws kinesis create-stream --stream-name myaws-kinesis-kpl-demo --shard-count 2
+
+
+
+
+sudo yum install -y aws-kinesis-agent
+
+
+
+
+vi /etc/aws-kinesis/agent.json
+
+
+{
+  "cloudwatch.emitMetrics": true,
+  "kinesis.endpoint": "",
+  "firehose.endpoint": "",
+
+  "flows": [
+    {
+      "filePattern": "/tmp/myaws.log*",
+      "kinesisStream": "myaws-kinesis-agent-demo",
+      "partitionKeyOption": "RANDOM"
+    },
+    {
+      "filePattern": "/tmp/app.log*",
+      "deliveryStream": "yourdeliverystream"
+    }
+  ]
+}
+
+
+firehose.us-west-2.amazonaws.com"
+
+sudo service aws-kinesis-agent start
+
+
+sudo chkconfig aws-kinesis-agent on
+
+
+tailf /var/log/aws-kinesis-agent/aws-kinesis-agent.log
+
+
+vi feeddata.sh
+[ec2-user@myaws_ip ~]$ ls
+feeddata.sh  kpl-local
+[ec2-user@myaws_ip ~]$ chmod 777 feeddata.sh
+[ec2-user@myaws_ip ~]$ ./feeddata.sh &
+[1] 25719
+while(true) do
+   sleep 10;
+   echo `date +"%H:%M:%S"` "sample text" >> /tmp/myaws.log
+done;
+
+
+
+
+ tailf /var/log/aws-kinesis-agent/aws-kinesis-agent.log
+
+
+ aws kinesis create-stream --stream-name myaws-kinesis-agent-demo --shard-count 1
+
+
+aws kinesis list-streams
+
+
+  npm config set registry http://registry.npmjs.org/
+
+
+
+
+
+ npm install
+
+
+ /home/ec2-user/kclnodejs/bin/kcl-bootstrap --java /usr/bin/java -e -p ./sample.properties > consumer.out 2>&1 &
+
+
+ /home/ec2-user/kclnodejs/bin/kcl-bootstrap --java /usr/bin/java -e -p ./sample.properties > consumer.out 2>&1 &
+
+
+
+
+
+
+
+
+
+
+ curl -XPOST https://elasticsearch-domainendpoint/request_data -d '{
+ "settings" : {
+ "number_of_shards" : 1
+ },
+ "mappings": {
+ "requests": {
+ "properties" : {
+ "DATETIME" : { "type" : "date", "format" :
+"yyyy-MM-dd HH:mm:ss.SSS" },
+ "STATUS": { "type" : "string" },
+ "STATUSCOUNT": { "type" : "integer" }
+ }
+ }
+ }
+} '
+
+
+
+
+sudo yum install –y https://s3.amazonaws.com/streaming-data-agent/aws-kinesis-agent-latest.amzn1.noarch.rpm
+
+
+
+
+
+curl -XPOST https://search-web-log-summary-lhf76o5wy4fvn5jn6ojlfodwk4.us-east-1.es.amazonaws.com/request_data -d '{ "settings" : { "number_of_shards" : 1}, "mappings": { "requests": { "properties" : { "DATETIME" : { "type" : "date", "format" : "yyyy-MM-dd HH:mm:ss.SSS" }, "STATUS": { "type" : "string" }, "STATUSCOUNT": { "type" : "integer" } } } } } '
+
+
+ curl -XPUT https://search-web-log-summary-lhf76o5wy4fvn5jn6ojlfodwk4.us-east-1.es.amazonaws.com/request_data -d '{ "settings" : { "number_of_shards" : 1}, "mappings": { "requests": { "properties" : { "DATETIME" : { "type" : "date", "format" : "yyyy-MM-dd HH:mm:ss.SSS" }, "STATUS": { "type" : "string" }, "STATUSCOUNT": { "type" : "integer" } } } } } '
+
+
+
+
+  curl -XPUT https://search-web-log-summary-lhf76o5wy4fvn5jn6ojlfodwk4.us-east-1.es.amazonaws.com/request_data -d '
+  { "settings" : { "number_of_shards" : 1}, "mappings": { "requests": { "properties" : { "DATETIME" : { "type" : "date", "format" : "yyyy-MM-dd HH:mm:ss.SSS" }, "STATUS": { "type" : "string" }, "STATUSCOUNT": { "type" : "integer" } } } } } '
+
+
+
+
+
+
+ {
+  "cloudwatch.emitMetrics": true,
+  "kinesis.endpoint": "",
+  "firehose.endpoint": "",
+
+  "flows": [
+    {
+      "filePattern": "/tmp/app.log*",
+      "kinesisStream": "yourkinesisstream",
+      "partitionKeyOption": "RANDOM"
+    },
+    {
+      "filePattern": "/tmp/myaws.log*",
+      "deliveryStream": "web-log-ingestion-stream"
+    }
+  ]
+}
+
+"kinesis.endpoint": "https://kinesis.ap-south-1.amazonaws.com",
+
+ monitoring.ap-south-1.amazonaws.com
+ kinesis.ap-south-1.amazonaws.com
+
+ {
+ "cloudwatch.endpoint": "monitoring.us-east-1.amazonaws.com",
+ "cloudwatch.emitMetrics": true,
+ "firehose.endpoint": "firehose.us-east-1.amazonaws.com",
+ "flows": [
+ {
+ "filePattern": "/home/ec2-user/access_log_20181214-071954.log*",
+ "deliveryStream": "web-log-ingestion-stream",
+ "dataProcessingOptions": [
+ {
+ "initialPostion": "START_OF_FILE",
+ "maxBufferAgeMillis":"2000",
+ "optionName": "LOGTOJSON",
+ "logFormat": "COMBINEDAPACHELOG"
+ }]
+ }
+ ]
+}
+
+
+firehose.ap-south-1.amazonaws.com
+
+ "cloudwatch.endpoint": "monitoring.ap-south-1.amazonaws.com",
+
+
+
+ CREATE OR REPLACE STREAM "DESTINATION_SQL_STREAM" (
+ datetime TIMESTAMP,
+ status INTEGER,
+ statusCount INTEGER);
+CREATE OR REPLACE PUMP "STREAM_PUMP" AS
+ INSERT INTO "DESTINATION_SQL_STREAM"
+ SELECT
+ STREAM ROWTIME as datetime,
+ "response" as status,
+ COUNT(*) AS statusCount
+ FROM "SOURCE_SQL_STREAM_001"
+ GROUP BY
+ "response",
+ FLOOR(("SOURCE_SQL_STREAM_001".ROWTIME - TIMESTAMP '1970-01-01 00:00:00') minute / 1 TO MINUTE);
+
+
+
+
+
+
+
+
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+python apache-fake-log-gen.py -n 10000 -o LOG
+
+sudo cp access_log_*.log /tmp/
+
+sudo mv access_log_20190104-* tmp/
+
+
+
+
+
+  t DATETIME
+
+
+
+  curl -X PUT "localhost:9200/my_index" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "date": {
+          "type":   "date",
+          "format": "yyyy-MM-dd"
+        }
+      }
+    }
+  }
+}
+'
