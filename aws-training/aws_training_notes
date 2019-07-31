@@ -1,0 +1,333 @@
+Welcome to AWS marathon!!
+
+Everyone has RW access, so please do not CUT anything!
+Cut means CTRL+x
+COPY means CTRL+c
+
+*************************************************************************************************************************
+cd ~/Downloads
+
+ssh -i PEM ubuntu@public-ip
+
+sudo apt update
+
+sudo apt install apache2 -y
+
+curl localhost
+
+DAY 2-----------------------------------------------------------------------------------------
+sudo su
+
+echo "Web server 1" > /var/www/html/index.html
+
+echo "ok" > /var/www/html/health.html
+
+
+#!/bin/bash
+apt update -y
+apt install apache2 -y
+service apache2 start
+IP_ADDR=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+echo "AUTOSCALE with IP $IP_ADDR" > /var/www/html/index.html
+echo "ok" > /var/www/html/health.html
+
+
+
+(Mac->) $ sudo easy_install pip
+(Mac->) $ sudo pip install awscli --upgrade --ignore-installed six
+
+(Mac->) $ brew install awscli (if above 2 commands are not working)
+
+If all of the above for Mac is not working then try the below commands
+(Mac->) $ curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+(Mac->) $ unzip awscli-bundle.zip
+(Mac->) $ sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+
+aws ec2 describe-instances
+
+https://docs.aws.amazon.com/cli/latest/reference/index.html
+
+printf "\nAll regions done but I WILL BE BACK when the machines rise again!!\n\nExited the AWS Janitor\n\n"
+
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running,stopped
+
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running,stopped | grep InstanceId
+
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running,stopped | grep InstanceId | awk '{printf "%s", $2}'
+
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running,stopped | grep InstanceId | awk '{printf "%s", $2}' | tr "," " " | tr -d "\""
+
+
+
+#!/bin/bash
+DELETE_MODE=false
+
+ID_LIST=$( aws ec2 describe-instances --filters Name=instance-state-name,Values=running,stopped | grep InstanceId | awk '{printf "%s", $2}' | tr "," " " | tr -d "\"" )
+if [ "x$ID_LIST" = "x" ]; then
+  printf "No instances found to be terminated\n"
+else
+  printf "Terminating instances $ID_LIST"
+  if [ "$DELETE_MODE" = true ]; then
+    aws ec2 terminate-instances --instance-ids $ID_LIST
+    echo " Done!"
+  else
+    echo " Skipped"
+  fi
+fi
+
+
+
+Please download the following WAR on your local machine
+https://storage.googleapis.com/skl-training/aws-codelabs/aws-intro/HelloWorld.war
+
+Home work AWS Script ::
+
+Input :: OS Availability Zone, EC2 Size
+
+Expected to create a EC2 instance using given input.
+
+
+
+sudo apt update
+
+sudo apt install docker.io -y
+
+sudo docker version
+
+docker version
+
+sudo usermod -aG docker ubuntu
+
+docker images
+
+docker ps -a
+
+docker run docker/whalesay cowsay Hello blue planet
+
+docker run --rm busybox:latest /bin/echo "Hello 3rd rock"
+
+
+DAY 3 *************************************************************************************************************************************************
+docker images
+
+docker ps -a
+
+sudo ls -al /var/lib/docker/image/overlay2/layerdb/sha256
+
+docker rmi WHALESAY_IMAGE_ID
+
+docker rm CONTAINER_NAME
+
+docker ps -a
+
+docker rmi WHALESAY_IMAGE_ID
+
+sudo ls -al /var/lib/docker/image/overlay2/layerdb/sha256
+
+docker run docker/whalesay cowsay Hello blue planet
+
+docker ps -a
+
+docker run --rm docker/whalesay cowsay Hello blue planet
+
+docker ps -a
+
+docker run --rm docker/whalesay cowsay Hello blue planet
+
+docker run docker/whalesay cowsay Hello blue planet
+
+docker ps -a
+
+
+**********************************************************************************************************************************
+docker run -it --rm busybox:latest
+
+ps -ef
+
+mkdir /test
+echo "Croc in drain in MH" > /test/sample.txt
+ls -al /test
+exit
+
+docker ps -a
+
+docker run -it --rm busybox:latest
+
+ls -al
+exit
+
+docker run -d centos tail -f /dev/null
+
+docker ps -a
+
+docker exec -it CONTAINER_NAME bash
+
+yum update
+
+exit
+
+ps -ef | grep [c]ontainer
+
+ps -ef | grep [t]ail
+
+docker ps -a
+
+docker start [container name]
+
+docker ps -a
+
+ps -ef | grep [c]ontainer
+
+ps -ef | grep [t]ail
+
+docker pull tomcat:jre8
+
+docker run -d -p 80:8080 tomcat:jre8
+
+
+************************************************************************************************************************************************************************
+docker logs -f --tail 50 [CONTAINER NAME OR ID AS PER YOUR WISH]
+
+sudo chown ubuntu:ubuntu -R /opt
+mkdir /opt/myapp
+cd /opt/myapp
+wget https://storage.googleapis.com/skl-training/aws-codelabs/aws-intro/HelloWorld.war
+
+docker stop RUNNING CONTAINER NAME
+
+docker run -v /opt/myapp:/hostdir -d -p 80:8080 tomcat:jre8
+
+docker ps -a
+
+docker exec -it CONTAINER_NAME bash
+
+ps -ef
+cd webapps
+ls -al
+ls -al /hostdir
+
+echo "File created in the container" > /hostdir/logs.txt
+
+cp /hostdir/*.war .
+ls -al
+
+docker stop CONTAINER NAME
+
+docker commit -a "Synamedia" -m "Tomcat and application" CONTAINER NAME THAT YOU STOPPED JUST NOW    mytomcat
+
+docker run -d -p 80:8080 mytomcat
+
+pwd
+
+vi Dockerfile
+
+FROM tomcat:jre8
+MAINTAINER Synamedia
+COPY HelloWorld.war /usr/local/tomcat/webapps/
+
+SAVE THE FILE AND EXIT vi
+
+docker build -t myworld .
+
+docker stop $(docker ps -a -q)
+
+docker ps -a
+
+docker rm $(docker ps -a -q)
+
+docker ps -a
+
+docker run -d -it --rm -p 80:80 --name aspnetcore_sample microsoft/dotnet-samples:aspnetapp
+
+docker pull mysql
+
+docker run -p 3306:3306 --name flipbasketdb -e MYSQL_ROOT_PASSWORD=password -d mysql
+
+docker exec -it flipbasketdb bash
+mysql -u root -p
+
+
+CREATE DATABASE `ecom`;
+
+CREATE TABLE `ecom`.`users` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(100) DEFAULT NULL,
+  `EMAIL_ID` varchar(100) DEFAULT NULL,
+  `PASSWORD` varchar(100) DEFAULT NULL,
+  `JOIN_DATE` varchar(29) DEFAULT NULL,
+  `AGE` int(11) DEFAULT NULL,
+  `STATE` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `ecom`.`products` (
+  `ID` int(11) NOT NULL,
+  `version` int(11) DEFAULT NULL,
+  `PRODUCT_NAME` varchar(500) DEFAULT NULL,
+  `PRODUCT_PRICE` decimal(10,2) DEFAULT NULL,
+  `STOCK` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+);
+
+insert into ecom.users values (1, 'Nirmallya1', 'nm1@gmail.com', 'testing', '26 April 1993', 23, 'Sane');
+insert into ecom.users values (2, 'Nirmallya2', 'nm2@gmail.com', 'testing', '26 April 2016', 24, 'Insane');
+
+insert into ecom.products values (1, 1, '56 Inch Curved LED TV', 250000, 10);
+insert into ecom.products values (2, 5, 'Google Pixel XL', 57000, 20);
+insert into ecom.products values (3, 20, 'HP printer', 7400, 100);
+insert into ecom.products values (4, 1, 'Gold tip aux cable', 6200, 35);
+
+commit;
+
+select * from ecom.users;
+
+exit
+
+docker stop $(docker ps -a -q)
+
+docker run -d -p 80:80 --name small_httpd -m 20m httpd
+
+docker stats --all
+CTRL+c
+
+
+************************************************************************************************************************************************************************************
+sudo su
+
+lsblk
+
+file -s /dev/xvdf
+
+mkfs -t ext4 /dev/xvdf
+
+file -s /dev/xvdf
+
+mkdir /appdata
+
+mount /dev/xvdf /appdata
+
+ls -al /appdata
+
+lsblk
+
+echo "Orbit raising part 3 was completed. Eagerly waiting for sep 7th to see the rover roam on the moon" > /appdata/chandrayaan2.txt
+
+ls -al /appdata
+
+umount /dev/xvdf
+
+
+EFS ************************************************************************************************************************************************************************************
+please login to the new EC2 instance
+
+sudo apt update
+
+sudo su
+
+echo "File created from instance 1" > ./efs/sample.txt
+
+
+Day 4 *************************************************************************************************************************************************************
+Please download the following PDF for your reference ..
+https://storage.googleapis.com/skl-training/content/Synamedia/CloudEssentials-v3.0.4-Aug01.2019.pdf
